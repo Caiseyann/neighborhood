@@ -94,3 +94,53 @@ def join_strip(request, strip_id):
     return redirect('homepage')
 
 
+@login_required(login_url='/accounts/login/')
+def leave_strip(request, strip_id):
+    '''
+    This function will delete a neighbourhood instance in the join table
+    '''
+    if Join.objects.filter(user_id=request.user).exists():
+        Join.objects.get(user_id=request.user).delete()
+        return redirect('homepage')
+
+
+@login_required(login_url='/accounts/login/')
+def user_profile(request, username):
+    profile = User.objects.get(username=username)
+    try:
+        profile_info = Profile.get_profile(profile.id)
+    except:
+        profile_info = Profile.filter_by_id(profile.id)
+    businesses = Business.get_profile_businesses(profile.id)
+    title = f'@{profile.username}'
+    return render(request, 'profile.html', {'title': title, 'profile': profile, 'profile_info': profile_info, 'businesses': businesses})
+
+
+@login_required(login_url='/accounts/login/')
+def new_post(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.poster = current_user
+            post.post_strip = request.user.join.strip_id
+            post.save()
+        return redirect('homepage')
+
+    else:
+        form = AddPostForm()
+    return render(request, 'new_post.html', {"form": form})
+
+def search_results(request):
+
+    if 'business' in request.GET and request.GET["business"]:
+        search_term = request.GET.get("business")
+        business_results = Business.search_by_name(search_term)
+        message = f"{search_term}"
+
+        return render(request, 'search.html', {"message": message, "businesses": business_results})
+
+    else:
+        message = "Please enter a search term"
+        return render(request, 'search.html', {"message": message})
