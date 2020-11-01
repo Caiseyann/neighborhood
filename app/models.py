@@ -119,7 +119,7 @@ class Join(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=30)
-    image = models.ImageField(upload_to='images/', blank=True)
+    image = ImageField(blank=True, manual_crop="")
     description = HTMLField(blank=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     post_strip = models.ForeignKey(
