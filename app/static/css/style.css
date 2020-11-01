@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic");
+@-ms-viewport {
+  width: device-width;
+}
+a {
+  color: #18BC9C;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+a:hover {
+  color: #0f7864;
+  text-decoration: underline;
+}
+ img {
+  vertical-align: middle;
+  border-style: none;
+}
+body{
+ height: 100%;
+ background-position: center;
+ background-size: cover;
+ background-image: url("../images/cool-background\ \(1\).png");
+}
