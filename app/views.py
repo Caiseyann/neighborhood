@@ -46,3 +46,51 @@ def add_profile(request):
     else:
         form = NewProfileForm()
     return render(request, 'new_profile.html', {"form": form})
+
+def add_strip(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = AddStripForm(request.POST, request.FILES)
+        if form.is_valid():
+            strip = form.save(commit=False)
+            strip.user_profile = current_user
+            strip.save()
+        return redirect('homepage')
+
+    else:
+        form = AddStripForm()
+    return render(request, 'add_strip.html', {"form": form})
+
+@login_required(login_url='/accounts/login/')
+def add_business(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = AddBusinessForm(request.POST, request.FILES)
+        if form.is_valid():
+            business = form.save(commit=False)
+            business.business_owner = current_user
+            business.business_strip = request.user.join.strip_id
+            business.save()
+        return redirect('homepage')
+
+    else:
+        form = AddBusinessForm()
+    return render(request, 'add_business.html', {"form": form})
+
+
+@login_required(login_url='/accounts/login/')
+def join_strip(request, strip_id):
+    '''
+    This view function will implement adding 
+    '''
+    neighborhood = Neighborhood.objects.get(pk=strip_id)
+    if Join.objects.filter(user_id=request.user).exists():
+
+        Join.objects.filter(user_id=request.user).update(strip_id=neighborhood)
+    else:
+
+        Join(user_id=request.user, strip_id=neighborhood).save()
+
+    return redirect('homepage')
+
+
