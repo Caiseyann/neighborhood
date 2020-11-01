@@ -169,5 +169,9 @@ STATICFILES_DIRS = (
 
 
 LOGIN_REDIRECT_URL = '/'
+UPLOADCARE = {
+    'pub_key': '717d43720f585d4bc65b',
+    'secret': '82949c33be718982fdc6',
+}
 
 django_heroku.settings(locals())
