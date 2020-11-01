@@ -1,0 +1,68 @@
+{%extends 'base.html'%}
+{% block content %}
+{{ block.super}}
+{% load bootstrap4 %}
+{% load staticfiles%}
+
+
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<br>
+<br>
+<div class="container">
+
+  <div class="row">
+
+    <div class="col-md-4">
+
+      <div class="card border-secondary">
+        <div class="card-footer">
+
+          <img class="rounded-circle img-responsive" width="170" height="170" src="{{profile_info.avatar.url}}" size="">
+          <br>
+
+
+          <br>
+
+          <p id="text" style="width:100%; padding-left:6px;">{{profile_info.user | upper}}</p>
+
+
+          <div style="width:100%; padding-left:20px;padding-top:10px;" class="row">
+
+            <p id="text" style="width:100%; padding-left:6px;">{{businesses | length }} businesses</p>
+            <br>
+            <p id="text" style="margin-top:0px;">{{profile_info.bio | safe}}</p>
+
+            <p id="text" style="margin-top:0px;">{{profile_info.contact | safe}}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="card-columns ">
+        {% for business in businesses %}
+        <div class="card">
+          <div class="card-body" style="background-color:#eceff1;">
+            <h5>{{business.name | upper}}</h5>
+            <h5>{{business.description | safe}}</h5>
+            <p>{{business.email }}</p>
+            <p>Location: {{business.business_strip.name}}</p>
+          </div>
+        </div>
+        {% empty %}
+        <div class="row">
+          <h4>{{user.username}} Hasn't added any business would you like to
+            register one? <a style="color:#4fc3f7;" href="{% url 'add_business'  %}"> Register here</a>
+          </h4>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
