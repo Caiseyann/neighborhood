@@ -32,3 +32,17 @@ def homepage(request):
         return render(request, 'index.html', {"strips": strip})
 
 
+@login_required(login_url='/accounts/login/')
+def add_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = current_user
+            profile.save()
+        return redirect('homepage')
+
+    else:
+        form = NewProfileForm()
+    return render(request, 'new_profile.html', {"form": form})
