@@ -1,0 +1,3 @@
+Hello {{name}}
+
+Welcome to the Compound! In this website we bring you a collection of the various Neighbourhoods around you as well as businesses in each Neighbourhood. 
